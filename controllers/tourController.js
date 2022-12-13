@@ -1,6 +1,14 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 const Tour = require('./../models/tourModel');
 
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  console.log(req.query);
+  next();
+};
+
 exports.getAllTours = async (req, res) => {
   try {
     // Filtering
@@ -41,6 +49,7 @@ exports.getAllTours = async (req, res) => {
       if (skip >= numTours) throw new Error('This page does not exit');
     }
 
+    console.log(query);
     const tours = await query;
 
     res.status(200).json({
